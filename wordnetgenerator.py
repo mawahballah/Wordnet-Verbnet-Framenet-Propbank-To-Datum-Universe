@@ -3,7 +3,7 @@ from nltk.corpus import wordnet as wn
 import re
 import os
 from collections import deque
-os.chdir("C:\Users\mabde\Desktop\pyinterface-fi\pyinterface")
+os.chdir("C:\Users\mabde\Desktop\wordnet-datum")
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 #to get the pos_number from synset 'x' => x=str(synset.name()) x.split('.')[2]
 #use x.split('.')[0] to get the name
@@ -283,4 +283,4 @@ print("words in sentences: ")
 print(wordsinsentences)
 print("words in wordnet: ")
 print(wordsfoundcount)
-entity.save('C:/Users/mabde/Desktop/pyinterface-fi/pyinterface/test2.datum')
+entity.save('C:/Users/mabde/Desktop/wordnet-datum/wordnet-nolemmas.datum')
