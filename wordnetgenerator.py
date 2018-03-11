@@ -12,9 +12,6 @@ antvisited={}
 nkatemexample={}
 nkateumdefinition={}
 words={}
-defkatum={}
-doneins={}
-exkatum={}
 def addhyponyms(katum,wne):
     if not visited.get(wne.name(),False):
         visited[wne.name()]=True
