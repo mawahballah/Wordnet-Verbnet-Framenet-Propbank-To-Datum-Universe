@@ -15,11 +15,8 @@ words={}
 defkatum={}
 doneins={}
 exkatum={}
-wordsfoundcount=0
-wordsinsentences=0
 def addhyponyms(katum,wne):
-	if not visited.get(wne.name(),False):
-		global wordsinsentences,wordsfoundcount
+    if not visited.get(wne.name(),False):
         visited[wne.name()]=True
         if (len(wne.hyponyms()))>0:             
             for hypo in wne.hyponyms():
@@ -44,37 +41,13 @@ def addhyponyms(katum,wne):
                     if hypo.definition():
                         if not nkateumdefinition.get(neword,False):
                             nkateumdefinition[neword]=True
-                            d=hypo.definition()
-                            de=definition.Get(d)
-                            definedby=de.Get("definedby")
-                            if not defkatum.get(de,False):
-                                defkatum[de]=True
-                                definitionwords=de.Get("definitionwords")
-                                checkwords=d.split(' ')                                
-                            	wordsinsentences=wordsinsentences+len(checkwords)
-                                for cw in checkwords:
-                                    if(wordroot.find(cw)):
-                                    	wordsfoundcount=wordsfoundcount+1
-                                        defword=wordroot.Get(cw)
-                                        defword._is(definitionwords,check=False)
-                            newkatum._is(definedby,check=False)
+                            de=definition.Get(hypo.definition())
+                            newkatum._is(de,check=False)
                     if hypo.examples():
                         if not nkatemexample.get(neword,False):
                             nkatemexample[neword]=True
-                            examp=hypo.examples()[0]
-                            ex=examples.Get(examp)
-                            usedby=ex.Get("usedby")
-                            if not exkatum.get(ex,False):
-                                exkatum[ex]=True
-                                examplewords=ex.Get("examplewords")
-                                checkwords=examp.split(' ')
-                                wordsinsentences=wordsinsentences+len(checkwords)
-                                for cw in checkwords:
-                                    if(wordroot.find(cw)):
-                                    	wordsfoundcount=wordsfoundcount+1
-                                        exword=wordroot.Get(cw)
-                                        exword._is(examplewords,check=False)
-                            newkatum._is(usedby,check=False)
+                            ex=examples.Get(hypo.examples()[0])                            
+                            newkatum._is(ex,check=False)
                     if hypo.lemmas()[0].antonyms():
                         antonym=hypo.lemmas()[0].antonyms()[0].synset().name()
                         if not antvisited.get(antonym,False):
@@ -98,8 +71,7 @@ def addhyponyms(katum,wne):
 
 
 def addfkatum(katum,wne):
-    if not visited.get(wne.name(),False):
-    	global wordsinsentences,wordsfoundcount
+    if not visited.get(wne.name(),False):       
         visited[wne.name()]=True             
         neword=Getname(wne)
         word = neword.split('.')[0]
@@ -117,37 +89,13 @@ def addfkatum(katum,wne):
         if wne.definition():
             if not nkateumdefinition.get(neword,False):
                 nkateumdefinition[neword]=True
-                d=wne.definition()
-                de=definition.Get(d)
-                definedby=de.Get("definedby")
-                if not defkatum.get(de,False):
-                    defkatum[de]=True
-                    definitionwords=de.Get("definitionwords")
-                    checkwords=d.split(' ')
-                    wordsinsentences=wordsinsentences+len(checkwords)					
-                    for cw in checkwords:
-                        if(wordroot.find(cw)):
-                        	wordsfoundcount=wordsfoundcount+1
-                        	defword=wordroot.Get(cw)
-                        	defword._is(definitionwords,check=False)
-                newkatum._is(definedby,check=False)
+                de=definition.Get(wne.definition())
+                newkatum._is(de,check=False)
         if wne.examples():
             if not nkatemexample.get(neword,False):
                 nkatemexample[neword]=True
-                examp=wne.examples()[0]
-                ex=examples.Get(examp)
-                usedby=ex.Get("usedby")
-                if not exkatum.get(ex,False):
-                    exkatum[ex]=True
-                    examplewords=ex.Get("examplewords")
-                    checkwords=examp.split(' ')
-                    wordsinsentences=wordsinsentences+len(checkwords)
-                    for cw in checkwords:
-                        if(wordroot.find(cw)):
-                        	wordsfoundcount=wordsfoundcount+1
-                        	exword=wordroot.Get(cw)
-                        	exword._is(examplewords,check=False)
-                newkatum._is(usedby,check=False)
+                ex=examples.Get(wne.examples()[0])
+                newkatum._is(ex,check=False)
         if wne.lemmas()[0].antonyms():
             antonym=wne.lemmas()[0].antonyms()[0].synset().name()
             if not antvisited.get(antonym,False):
@@ -209,47 +157,22 @@ firstinst._is(noun,check=False)
 addhyponyms(firstinst,wn.synsets('entity')[0])
 
 for synset in list(wn.all_synsets('v')):
-	if(len(synset.hypernyms())==0):
-		global wordsinsentences,wordsfoundcount
-    	nverb= str(synset.name())
+    if(len(synset.hypernyms())==0):     
+        nverb= str(synset.name())
         verbword=nverb.split('.')[0]
-        verbk = wordroot.Get(verbword)
-        verbk._is(verb,check=False)
-        verbins = verbk.Get(1)
+        verbk = wordroot.Get(verbword)        
+        verbins = verbk.Get(verbk.countI+1)
+        verbins._is(verb,check=False)
         if synset.definition():
             if not nkateumdefinition.get(verbword,False):
                 nkateumdefinition[verbword]=True
-                d=synset.definition()
-                de=definition.Get(d)
-                definedby=de.Get("definedby")
-                if not defkatum.get(de,False):
-                    defkatum[de]=True
-                    definitionwords=de.Get("definitionwords")
-                    checkwords=d.split(' ')
-                    wordsinsentences=wordsinsentences+len(checkwords)
-                    for cw in checkwords:
-                        if(wordroot.find(cw)):
-                        	wordsfoundcount=wordsfoundcount+1
-                        	defword=wordroot.Get(cw)
-                        	defword._is(definitionwords,check=False)
-                verbins._is(definedby,check=False)
+                de=definition.Get(synset.definition())                
+                verbins._is(de,check=False)
         if synset.examples():
             if not nkatemexample.get(verbword,False):
                 nkatemexample[verbword]=True
-                examp=synset.examples()[0]
-                ex=examples.Get(examp)
-                usedby=ex.Get("usedby")
-                if not exkatum.get(ex,False):
-                    exkatum[ex]=True
-                    examplewords=ex.Get("examplewords")
-                    checkwords=examp.split(' ')
-                    wordsinsentences=wordsinsentences+len(checkwords)
-                    for cw in checkwords:
-                        if(wordroot.find(cw)):
-                        	wordsfoundcount=wordsfoundcount+1
-                        	exword=wordroot.Get(cw)
-                        	exword._is(definitionwords,check=False)
-                verbins._is(usedby,check=False)
+                ex=examples.Get(synset.examples()[0])
+                verbins._is(ex,check=False)
         addhyponyms(verbins,synset)
 
 for synset in list(wn.all_synsets('a')):
@@ -278,9 +201,4 @@ Addexceptions("adj.exc")
 Addexceptions("adv.exc")
 Addexceptions("verb.exc")
 
-
-print("words in sentences: ")
-print(wordsinsentences)
-print("words in wordnet: ")
-print(wordsfoundcount)
 entity.save('C:/Users/mabde/Desktop/wordnet-datum/wordnet-nolemmas.datum')
