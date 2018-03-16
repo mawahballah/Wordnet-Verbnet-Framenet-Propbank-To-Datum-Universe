@@ -9,6 +9,8 @@ from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 def Getexactsynset(syn,wordindatum,wnr):
 	wordstr=Getname(syn)
+	definition = wnr.find("definition")
+	curdefinition = syn.definition()
 	priority=wnr.find("priority")
 	word = wordstr.split('.')[0]
 	pos = wordstr.split('.')[1]
@@ -22,11 +24,13 @@ def Getexactsynset(syn,wordindatum,wnr):
 	elif(pos=='a'):
 		typ="adjective"
 	if(typ!="notfound"):
-		if(wordindatum.countI>0):		
-			word_priority = wordstr.split('.')[2]		
+		if(wordindatum.countI>0):
 			for instance in wordindatum.I:
-				if(instance.Is(wnr.find(typ))):					
-					return instance	
+				if(instance.Is(wnr.find(typ))):
+					defby=definition.of(instance)
+					if(defby!=None):
+						if(defby.a0.O==curdefinition):
+							return instance
 	return None			
 
 def Getname(wne):
@@ -55,4 +59,4 @@ for w in wordroot.I:
 						exactinstance._is(lem)
 
 
-wordnetthing.save('C:/Users/mabde/Desktop/wordnet-datum/wordnet.datum')
+wordnetthing.save('C:/Users/mabde/Desktop/wordnet-datum/wordnet-nohas.datum')
