@@ -42,7 +42,7 @@ def Of(k, *s):
     
     
 def _is(self, s,check=True):
-    return self.__getattribute__('is')(s,check=check)
+    return self.__getattribute__('is')(s,False)
     
 katum.Get = Get
 katum.And = And
