@@ -1,6 +1,6 @@
-# Wordnet to Datum Universe
+# Wordnet, Verbnet, Framenet, and Propbank to Datum Universe
 
-Using DatumTron Python API, a datum universe of wordnet is generated
+Using DatumTron Python API, a datum universe of wordnet, verbnet, framenet and propbank is generated
 
 ## Getting Started
 
@@ -26,7 +26,7 @@ Make sure that clr package is not installed. To do so open the Command Prompt an
 pip uninstall clr
 ```
 
-Get Wordnet python API
+Get Wordnet, Verbnet, Framenet and Propbank python API
 Download and install nltk from:
 
 ```
@@ -35,22 +35,34 @@ https://pypi.python.org/pypi/nltk
 
 ### Installing
 
-Open the Command prompt and change directory to the folder called “wordnet-datum”
-Then type:
+Open the Command prompt and change directory to the current folder
+Then type the following commands in turn:
 ```
-python wordnetgenerator.py
+python wordnet.py
+python wordnet-hyponyms.py
+python wordnet-topicdomains.py
+python wordnet-addinglemmas.py
+python wordnet-addinghas.py
+python wordnet-addingSister.py
+python verbnet.py
+python framenet.py
+python framenet-addingframerelations.py
+python framenet-frameelements.py
+python framenet-semantictype.py
+python framenet-semtypesFELU.py
+python propbank.py
 ```
 
 This will generate a datum universe in a file called:
 
 ```
-wordnet.datum
+wordnet-verbnet-framenet-propbank.datum
 ```
 
 
 ## Testing
 
-Using the DUV open wordnet.datum, the file should be opened correctly and should have all data from wordnet
+Using the DUV open wordnet-verbnet-framenet-propbank.datum, the file should be opened correctly and should have all data from these lexicons
 
 ## Built With
 
