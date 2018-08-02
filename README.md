@@ -51,12 +51,13 @@ python framenet-frameelements.py
 python framenet-semantictype.py
 python framenet-semtypesFELU.py
 python propbank.py
+python framenet-wordnet-linker.py
 ```
 
 This will generate a datum universe in a file called:
 
 ```
-wordnet-verbnet-framenet-propbank.datum
+wordnet-verbnet-framenet-propbank-linked.datum
 ```
 
 

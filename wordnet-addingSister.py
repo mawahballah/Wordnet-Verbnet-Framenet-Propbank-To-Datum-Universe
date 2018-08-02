@@ -7,61 +7,61 @@ os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 visited={}
 
-def Getexactsynset(syn,wordindatum,wnr):
-	wordstr=Getname(syn)
+def getExactSynset(syn,wordInDatum,wnr):
+	wordStr=getName(syn)
 	definition = wnr.find("definition")
-	curdefinition = syn.definition()
+	currentDefinition = syn.definition()
 	priority=wnr.find("priority")
-	word = wordstr.split('.')[0]
-	pos = wordstr.split('.')[1]
-	typ="notfound"	
+	word = wordStr.split('.')[0]
+	pos = wordStr.split('.')[1]
+	type_="notfound"	
 	if (pos=='n'):
-		typ="noun"
+		type_="noun"
 	elif(pos=='v'):
-		typ="verb"
+		type_="verb"
 	elif(pos=='r'):
-		typ="adverb"
+		type_="adverb"
 	elif(pos=='a'):
-		typ="adjective"
-	if(typ!="notfound"):
-		if(wordindatum.countI>0):
-			for instance in wordindatum.I:
-				if(instance.Is(wnr.find(typ))):
+		type_="adjective"
+	if(type_!="notfound"):
+		if(wordInDatum.countI>0):
+			for instance in wordInDatum.I:
+				if(instance.Is(wnr.find(type_))):
 					defin=definition.of(instance)
 					if(defin!=None):
-						if(defin.O==curdefinition):
+						if(defin.O==currentDefinition):
 							return instance
 	return None			
 
-def Getname(wne):
+def getName(wne):
     x=wne.name()
     x=str(x)
     return x						
 
 katum.load('wordnet-nosister.datum', atum())
-wordnetthing = datum.thing
+generalThing = datum.thing
 
-wordnetroot=wordnetthing.find("wordnet")
-wordroot=wordnetroot.find("wordroot")
-has=wordnetroot.find("has")
-sister=wordnetroot.get("sister")
+wordnetRoot=generalThing.find("wordnet")
+wordRoot=wordnetRoot.find("wordRoot")
+has=wordnetRoot.find("has")
+sister=wordnetRoot.get("sister")
 
-for w in wordroot.I:
-	worditself=w.O
-	listofsynsets=wn.synsets(worditself)
-	for synset in listofsynsets:
+for word in wordRoot.I:
+	wordItself=word.O
+	listOfSynsets=wn.synsets(wordItself)
+	for synset in listOfSynsets:
 		if not visited.get(synset.name(),False):
 			visited[synset.name()]=True			
-			exactinstance=Getexactsynset(synset,w,wordnetroot)
-			if(exactinstance!=None):
-				if(exactinstance.countI>0):
-					currentparent=sister.get(sister.countI+1)				
-					for instance in exactinstance.I:
+			exactInstance=getExactSynset(synset,word,wordnetRoot)
+			if(exactInstance!=None):
+				if(exactInstance.countI>0):
+					currentParent=sister.get(sister.countI+1)				
+					for instance in exactInstance.I:
 						if(instance.Is(has)==False):
-							instance._is(currentparent,check=False)
+							instance._is(currentParent,check=False)
 
 
 
 
 
-wordnetthing.save('wordnet-example-definition.datum')
+generalThing.save('wordnet-example-definition.datum')

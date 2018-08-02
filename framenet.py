@@ -8,73 +8,73 @@ from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 
 
-def addsingleframeelement(frameelementinstance,frameelementvalues,framekatum):
-	fedefinition=definition.get(frameelementvalues.definition)
-	feabbreviation=abbreviation.get(frameelementvalues.abbrev)
-	fecoretype=coretype.get(frameelementvalues.coreType)
-	fe_id=id_.get(frameelementvalues.ID)
-	frameelementinstance._is(fe_id,False)
-	frameelementinstance._is(fedefinition,False)
-	frameelementinstance._is(feabbreviation,False)	
-	frameelementinstance._is(fecoretype,False)	
-	framekatum._is(frameelementinstance,False)
+def addSingleframeElement(frameElementInstance,frameElementValues,frameKatum):
+	feDefinition=definition.get(frameElementValues.definition)
+	feAbbreviation=abbreviation.get(frameElementValues.abbrev)
+	fecoreType=coreType.get(frameElementValues.coreType)
+	feID=id_.get(frameElementValues.ID)
+	frameElementInstance._is(feID,False)
+	frameElementInstance._is(feDefinition,False)
+	frameElementInstance._is(feAbbreviation,False)	
+	frameElementInstance._is(fecoreType,False)	
+	frameKatum._is(frameElementInstance,False)
 	
 		
 
-def addlexicalunits(framekatum,frame):
+def addLexicalUnits(frameKatum,frame):
 	for key,value in frame.lexUnit.iteritems():
-		lukatum=lexUnit.get(key.split('.')[0])
-		luinstance=lukatum.get(lukatum.countI)		
-		lupos=POS.get(value.POS)
+		luKatum=lexUnit.get(key.split('.')[0])
+		luInstance=luKatum.get(luKatum.countI)		
+		luPOS=POS.get(value.POS)
 		luURL=URL.get(value.URL)
-		ludefinition=definition.get(value.definition)
-		luid=id_.get(value.ID)
-		luinstance._is(ludefinition,False)
-		luinstance._is(luURL,False)
-		luinstance._is(luid,False)
-		luinstance._is(lupos,False)	
-		framekatum._is(luinstance,False)
+		luDefinition=definition.get(value.definition)
+		luID=id_.get(value.ID)
+		luInstance._is(luDefinition,False)
+		luInstance._is(luURL,False)
+		luInstance._is(luID,False)
+		luInstance._is(luPOS,False)	
+		frameKatum._is(luInstance,False)
 
 
-def addframeelements(framekatum,frame):
+def addFrameElements(frameKatum,frame):
 	for key,value in frame.FE.iteritems():
-		frameelement=FE.get(key)
-		frameelementinstance=frameelement.get(frameelement.countI)
-		addsingleframeelement(frameelementinstance,value,framekatum)
+		frameElement=FE.get(key)
+		frameElementInstance=frameElement.get(frameElement.countI)
+		addSingleframeElement(frameElementInstance,value,frameKatum)
 		if frame.FEcoreSets!=None:
-			for setofcoresets in frame.FEcoreSets:
-				for value in setofcoresets:
-					if(value.ID==id_.of(frameelementinstance).O):
-						frameelementinstance._is(FEcoreSets)
+			for setOfCoreSets in frame.FEcoreSets:
+				for value in setOfCoreSets:
+					if(value.ID==id_.of(frameElementInstance).O):
+						frameElementInstance._is(FEcoreSets)
 
-def handleframe(frame):
-	framekatum=frame_.get(frame.name)
-	frameid=id_.get(frame.ID)
-	framedefinition=definition.get(frame.definition)
-	frameurl=URL.get(frame.URL)
-	framekatum._is(frameid,False)
-	framekatum._is(framedefinition,False)
-	framekatum._is(frameurl,False)	
-	addframeelements(framekatum,frame)
-	addlexicalunits(framekatum,frame)
+def handleFrame(frame):
+	frameKatum=frame_.get(frame.name)
+	frameID=id_.get(frame.ID)
+	frameDefinition=definition.get(frame.definition)
+	frameURL=URL.get(frame.URL)
+	frameKatum._is(frameID,False)
+	frameKatum._is(frameDefinition,False)
+	frameKatum._is(frameURL,False)	
+	addFrameElements(frameKatum,frame)
+	addLexicalUnits(frameKatum,frame)
 
 	
 
 katum.load('wordnet-verbnet.datum', atum())
-generalthing = datum.thing
-Framenetroot=generalthing.get("framenet")
+generalThing = datum.thing
+Framenetroot=generalThing.get("framenet")
 frame_=Framenetroot.get("frame")
 id_=Framenetroot.get("id")
 URL=Framenetroot.get("URL")
 definition=Framenetroot.get("definition")
-semtypes=Framenetroot.get("semantic type")
+semTypes=Framenetroot.get("semantic type")
 lexUnit=Framenetroot.get("lexical unit")
 FE=Framenetroot.get("frame element")
 FEcoreSets=Framenetroot.get("frame element core set")
 abbreviation=Framenetroot.get("abbreviation")
-coretype=Framenetroot.get("core type")
+coreType=Framenetroot.get("core type")
 POS=Framenetroot.get("POS")
 for frame in fn.frames():
-	handleframe(frame)
+	handleFrame(frame)
 
-generalthing.save('wordnet-verbnet-framenet-noframerelations.datum')
+generalThing.save('wordnet-verbnet-framenet-noframerelations.datum')

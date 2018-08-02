@@ -7,31 +7,31 @@ os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 
-def addframerelations(frame):
-	for framerelation in frame.frameRelations:
-		if 'Parent' in framerelation:
-			parentkatum=frame_.get(framerelation.Parent.name)
-			childkatum=frame_.get(framerelation.Child.name)
-			childkatum._is(frameRelations,False)
-			childkatum._is(parentkatum,False)
-			parentkatum._is(frameRelations,False)
+def addframeRelations(frame):
+	for frameRelation in frame.frameRelations:
+		if 'Parent' in frameRelation:
+			parentKatum=frame_.get(frameRelation.Parent.name)
+			childKatum=frame_.get(frameRelation.Child.name)
+			childKatum._is(frameRelations,False)
+			childKatum._is(parentKatum,False)
+			parentKatum._is(frameRelations,False)
 
 
-katum.load('wordnet-verbnet-framenet-noframerelations.datum', atum())
-generalthing = datum.thing
-Framenetroot=generalthing.find("framenet")
-frame_=Framenetroot.find("frame")
+katum.load('wordnet-verbnet-framenet-noframeRelations.datum', atum())
+generalThing = datum.thing
+framenetRoot=generalThing.find("framenet")
+frame_=framenetRoot.find("frame")
 for frame in frame_.I:
-	framenetframe=fn.frame(frame.O)
-	for framerelation in framenetframe.frameRelations:
-		if 'Parent' in framerelation:
-			parentkatum=frame_.find(framerelation.Parent.name)
-			if 'Child' in framerelation:
-				childkatum=frame_.find(framerelation.Child.name)
-				if(parentkatum!=None and childkatum!=None):			
-					childkatum._is(parentkatum,False)			
+	framenetFrame=fn.frame(frame.O)
+	for frameRelation in framenetFrame.frameRelations:
+		if 'Parent' in frameRelation:
+			parentKatum=frame_.find(frameRelation.Parent.name)
+			if 'Child' in frameRelation:
+				childKatum=frame_.find(frameRelation.Child.name)
+				if(parentKatum!=None and childKatum!=None):			
+					childKatum._is(parentKatum,False)			
 
 
 
 
-generalthing.save('wordnet-verbnet-framenet-fr.datum')
+generalThing.save('wordnet-verbnet-framenet-fr.datum')

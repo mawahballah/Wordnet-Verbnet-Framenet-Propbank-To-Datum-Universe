@@ -7,79 +7,79 @@ os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 
-def exactsemtype(semantictype):
+def exactSemType(semanticType):
 	queue=deque()
-	for sem in semtype.I0:
+	for sem in semType.I0:
 		queue.append(sem)
 	while(len(queue)!=0):
-		currentelement=queue.popleft()
-		currentelementid=id_.of(currentelement)
-		if(currentelement.O==semantictype.name and currentelementid.O==semantictype.ID):
-			return currentelement
-		if(currentelement.countI!=0):
-			for instance in currentelement.I0:
+		currentElement=queue.popleft()
+		currentElementID=id_.of(currentElement)
+		if(currentElement.O==semanticType.name and currentElementID.O==semanticType.ID):
+			return currentElement
+		if(currentElement.countI!=0):
+			for instance in currentElement.I0:
 				queue.append(instance)
 	return None
 
-def exactfe(fnframeelement):
-	mainkatum=frameelement.find(fnframeelement.name)
-	if mainkatum!=None:
-		if(mainkatum.countI!=0):		
-			for fe in mainkatum.I0:
-				feid=id_.of(fe)
-				if(feid!=None):
-					if(feid.O==fnframeelement.ID):
-						return fe
+def exactFE(fnFrameElement):
+	mainKatum=frameElement.find(fnFrameElement.name)
+	if mainKatum!=None:
+		if(mainKatum.countI!=0):		
+			for fE in mainKatum.I0:
+				fEID=id_.of(fE)
+				if(fEID!=None):
+					if(fEID.O==fnFrameElement.ID):
+						return fE
 	return None
 
 
-def exactlu(fnlexicalunit):
-	luname=fnlexicalunit.name.split('.')[0]
-	mainkatum=lexicalunit.find(luname)
-	if mainkatum!=None:
-		if(mainkatum.countI!=0):
-			for lu in mainkatum.I0:
-				luid=id_.of(lu)
-				if(luid.O==fnlexicalunit.ID):
-					return lu
+def exactlU(fnLexicalUnit):
+	lUName=fnLexicalUnit.name.split('.')[0]
+	mainKatum=lexicalUnit.find(lUName)
+	if mainKatum!=None:
+		if(mainKatum.countI!=0):
+			for lU in mainKatum.I0:
+				lUID=id_.of(lU)
+				if(lUID.O==fnLexicalUnit.ID):
+					return lU
 	return None
 
-def exactframe(fnframe):
-	framekatum=frames.find(fnframe.name)
-	if framekatum!=None:
-		return framekatum
+def exactFrame(fnFrame):
+	frameKatum=frames.find(fnFrame.name)
+	if frameKatum!=None:
+		return frameKatum
 	return None
 
-katum.load('wordnet-verbnet-framenet-semtypes.datum', atum())
-generalthing = datum.thing
-Framenetroot=generalthing.find("framenet")
-frameelement=Framenetroot.find("frame element")
-lexicalunit=Framenetroot.find("lexical unit")
-semtype=Framenetroot.find("semantic type")
-id_=Framenetroot.find("id")
-frames=Framenetroot.find("frame")
+katum.load('wordnet-verbnet-framenet-semTypes.datum', atum())
+generalThing = datum.thing
+framenetRoot=generalThing.find("framenet")
+frameElement=framenetRoot.find("frame element")
+lexicalUnit=framenetRoot.find("lexical unit")
+semType=framenetRoot.find("semantic type")
+id_=framenetRoot.find("id")
+frames=framenetRoot.find("frame")
 
-for fe in fn.fes():
-	if fe.semType!=None:
-		semantictypekatum=exactsemtype(fe.semType)
-		frameelementkatum=exactfe(fe)
-		if(semantictypekatum!=None and frameelementkatum!=None):
-			frameelementkatum._is(semantictypekatum,False)
+for fE in fn.fes():
+	if fE.semType!=None:
+		semanticTypeKatum=exactSemType(fE.semType)
+		frameElementkatum=exactFE(fE)
+		if(semanticTypeKatum!=None and frameElementkatum!=None):
+			frameElementkatum._is(semanticTypeKatum,False)
 
-for lu in fn.lus():
-	if len(lu.semTypes)!=0:
-		for semtypeinstance in lu.semTypes:
-			semantictypekatum=exactsemtype(semtypeinstance)
-			lukatum=exactlu(lu)
-			if(semantictypekatum!=None and lukatum!=None):
-				lukatum._is(semantictypekatum,False)
+for lU in fn.lus():
+	if len(lU.semTypes)!=0:
+		for semTypeInstance in lU.semTypes:
+			semanticTypeKatum=exactSemType(semTypeInstance)
+			lUkatum=exactlU(lU)
+			if(semanticTypeKatum!=None and lUkatum!=None):
+				lUkatum._is(semanticTypeKatum,False)
 
 for frame in fn.frames():
 	if len(frame.semTypes)!=0:
-		for semtypeinstance in frame.semTypes:
-			semantictypekatum=exactsemtype(semtypeinstance)
-			framekatum=exactframe(frame)
-			if(semantictypekatum!=None and framekatum!=None):
-				framekatum._is(semantictypekatum,False)
+		for semTypeInstance in frame.semTypes:
+			semanticTypeKatum=exactSemType(semTypeInstance)
+			frameKatum=exactFrame(frame)
+			if(semanticTypeKatum!=None and frameKatum!=None):
+				frameKatum._is(semanticTypeKatum,False)
 
-generalthing.save('wordnet-verbnet-framenet.datum')
+generalThing.save('wordnet-verbnet-framenet.datum')

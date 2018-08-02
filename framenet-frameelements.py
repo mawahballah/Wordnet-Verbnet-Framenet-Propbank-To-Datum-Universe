@@ -7,38 +7,38 @@ os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 
-def exactframe(frame):
-	mainfe=frameelement.find(frame.name)
-	if mainfe!=None:
-		for mainfeinst in mainfe.I:
-			mainfeinstID=id_.of(mainfeinst)
-			if mainfeinstID.O == frame.ID:
-				return mainfeinst
+def exactFrame(frame):
+	mainFE=frameElement.find(frame.name)
+	if mainFE!=None:
+		for mainFEinst in mainFE.I:
+			mainFEinstID=id_.of(mainFEinst)
+			if mainFEinstID.O == frame.ID:
+				return mainFEinst
 	return None
 
 
 katum.load('wordnet-verbnet-framenet-fr.datum', atum())
-generalthing = datum.thing
-Framenetroot=generalthing.find("framenet")
-frameelement=Framenetroot.find("frame element")
-id_=Framenetroot.find("id")
-Relation=Framenetroot.get("Relation")
-requires=Relation.get("requires frame element")
-excludes=Relation.get("excludes frame element")
+generalThing = datum.thing
+framenetRoot=generalThing.find("framenet")
+frameElement=framenetRoot.find("frame element")
+id_=framenetRoot.find("id")
+relation=framenetRoot.get("relation")
+requires=relation.get("requires frame element")
+excludes=relation.get("excludes frame element")
 for fe in fn.fes():	
 	if(fe.excludesFE!=None):
-		mainfe=exactframe(fe)
-		excludedfe=exactframe(fe.excludesFE)
-		if(mainfe!=None and excludedfe!=None):
+		mainFE=exactFrame(fe)
+		excludedFE=exactFrame(fe.excludesFE)
+		if(mainFE!=None and excludedFE!=None):
 			excludeskatum=excludes.get(excludes.countI)
-			mainfe._is(excludeskatum,False)
-			excludedfe._is(excludeskatum,False)				
+			mainFE._is(excludeskatum,False)
+			excludedFE._is(excludeskatum,False)				
 	if(fe.requiresFE!=None):
-		mainfe=exactframe(fe)
-		requiredfe=exactframe(fe.requiresFE)
-		if(mainfe!=None and requiredfe!=None):
-			requireskatum=requires.get(requires.countI)
-			mainfe._is(requireskatum,False)
-			requiredfe._is(requireskatum,False)						
+		mainFE=exactFrame(fe)
+		requiredFE=exactFrame(fe.requiresFE)
+		if(mainFE!=None and requiredFE!=None):
+			requiresKatum=requires.get(requires.countI)
+			mainFE._is(requiresKatum,False)
+			requiredFE._is(requiresKatum,False)						
 
-generalthing.save('wordnet-verbnet-framenet-fes.datum')
+generalThing.save('wordnet-verbnet-framenet-fes.datum')

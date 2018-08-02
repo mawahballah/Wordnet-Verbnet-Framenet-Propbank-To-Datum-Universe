@@ -6,44 +6,44 @@ from collections import deque
 os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
-def Getexactsynset(katum):
+def getExactSynset(katum):
 	name=katum.a0.O
-	definitionkatum=definition.of(katum)
+	definitionKatum=definition.of(katum)
 	for synset in wn.synsets(name):
-		if(synset.definition()==definitionkatum.O):
+		if(synset.definition()==definitionKatum.O):
 			return synset
 	return None
 
-def Getexactkatum(synset):
+def getExactKatum(synset):
 	name=synset.name()
 	word=name.split('.')[0]
-	wordkatum=wordroot.find(word)
-	if(wordkatum!=None):
-		synsetdefinition=synset.definition()
-		for instance in wordkatum.I:
-			instancedefinition=definition.of(instance)
-			if(instancedefinition!=None and instancedefinition.O==synsetdefinition):
+	wordKatum=wordRoot.find(word)
+	if(wordKatum!=None):
+		synsetDefinition=synset.definition()
+		for instance in wordKatum.I:
+			instanceDefinition=definition.of(instance)
+			if(instanceDefinition!=None and instanceDefinition.O==synsetDefinition):
 				return instance				
 	return None
 
 katum.load('wordnet-hyponyms-exceptions.datum', atum())
-generalthing = datum.thing
-wordnetroot=generalthing.find("wordnet")
-wordroot=wordnetroot.find("wordroot")
-definition=wordnetroot.find("definition")
-topicdomain=wordnetroot.get("topic domain")
-for word in wordroot.I:
+generalThing = datum.thing
+wordnetRoot=generalThing.find("wordnet")
+wordRoot=wordnetRoot.find("wordRoot")
+definition=wordnetRoot.find("definition")
+topicDomain_=wordnetRoot.get("topic domain")
+for word in wordRoot.I:
 	if(word.countI>0):
 		for instance in word.I:
-			exactsynset=Getexactsynset(instance)
-			if exactsynset:
-				topicdomains=exactsynset.topic_domains()
-				if len(topicdomains)>0:
-					for tdomain in topicdomains:
-						tdomainkatum=Getexactkatum(tdomain)
-						if tdomainkatum:
-							tdomainkatum._is(topicdomain,False)
-							instance._is(tdomainkatum,False)
+			exactSynset=getExactSynset(instance)
+			if exactSynset:
+				topicDomains=exactSynset.topic_domains()
+				if len(topicDomains)>0:
+					for topicDomain in topicDomains:
+						topicDomainKatum=getExactKatum(topicDomain)
+						if topicDomainKatum:
+							topicDomainKatum._is(topicDomain_,False)
+							instance._is(topicDomainKatum,False)
 
 
-generalthing.save('wordnet-hyponyms-exceptions-topicdomains.datum')
+generalThing.save('wordnet-hyponyms-exceptions-topicDomains.datum')

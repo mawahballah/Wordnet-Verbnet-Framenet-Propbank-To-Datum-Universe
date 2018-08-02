@@ -5,58 +5,58 @@ import os
 from collections import deque
 os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
-doneantonyms={}
-def Getexactkatum(synset):
+doneAntonyms={}
+def getExactKatum(synset):
 	name=synset.name()
 	word=name.split('.')[0]
-	wordkatum=wordroot.find(word)
-	if(wordkatum!=None):
-		synsetdefinition=synset.definition()
-		for instance in wordkatum.I:
-			instancedefinition=definition.of(instance)
-			if(instancedefinition!=None and instancedefinition.O==synsetdefinition):
+	wordKatum=wordRoot.find(word)
+	if(wordKatum!=None):
+		synsetDefinition=synset.definition()
+		for instance in wordKatum.I:
+			instanceDefinition=definition.of(instance)
+			if(instanceDefinition!=None and instanceDefinition.O==synsetDefinition):
 				return instance				
 	return None
 
-def addhyponyms(synset):	
-	exacthypernymkatum=Getexactkatum(synset)
-	if(exacthypernymkatum!=None):
+def addHyponyms(synset):	
+	exactHypernymKatum=getExactKatum(synset)
+	if(exactHypernymKatum!=None):
 		for hyponym in synset.hyponyms():
-			exacthyponymkatum= Getexactkatum(hyponym)
-			if exacthyponymkatum!=None:
-				exacthyponymkatum._is(exacthypernymkatum,False)
+			exactHyponymKatum= getExactKatum(hyponym)
+			if exactHyponymKatum!=None:
+				exactHyponymKatum._is(exactHypernymKatum,False)
 
-def addexceptions(filename):
-    file=open(filename,"r")
+def addExceptions(fileName):
+    file=open(fileName,"r")
     for line in file:
         word=line.split(' ')[1]
-        exceptionword=line.split(' ')[0]    
-        exceptionkatum = exception.Get(exception.countI + 1)
-        word_katum=wordroot.Get(word)
-        word_katum._is(exceptionkatum,check=False)
-        exceptionkatum.Get(exceptionword)
+        exceptionWord=line.split(' ')[0]    
+        exceptionKatum = exception.Get(exception.countI + 1)
+        wordKatum=wordRoot.Get(word)
+        wordKatum._is(exceptionKatum,check=False)
+        exceptionKatum.Get(exceptionWord)
 
-def addantonyms(synset):
-	doneantonyms[synset]=True
-	exactsynset=Getexactkatum(synset)
-	if exactsynset!=None:
-		anotnymkatum=antonym.Get(antonym.countI)
-		anotnymkatum._is(symmetrical,False)
-		exactsynset._is(anotnymkatum,False)
+def addAntonyms(synset):
+	doneAntonyms[synset]=True
+	exactSynset=getExactKatum(synset)
+	if exactSynset!=None:
+		anotnymKatum=antonym.Get(antonym.countI)
+		anotnymKatum._is(symmetrical,False)
+		exactSynset._is(anotnymKatum,False)
 		for anotnym_ in synset.lemmas()[0].antonyms():
-			anotnymsynset=Getexactkatum(anotnym_.synset())
-			if anotnymsynset!=None:
-				anotnymsynset._is(anotnymkatum,False)
-				doneantonyms[anotnym_.synset()]=True
+			anotnymSynset=getExactKatum(anotnym_.synset())
+			if anotnymSynset!=None:
+				anotnymSynset._is(anotnymKatum,False)
+				doneAntonyms[anotnym_.synset()]=True
 
 katum.load('wordnetonlysynsets.datum', atum())
-generalthing = datum.thing
-wordnetroot=generalthing.find("wordnet")
-wordroot=wordnetroot.find("wordroot")
-definition=wordnetroot.find("definition")
-exception = wordnetroot.Get("exception")
-relation=wordnetroot.Get("relation")
-symmetrical=wordnetroot.Get("symmetrical")
+generalThing = datum.thing
+wordnetRoot=generalThing.find("wordnet")
+wordRoot=wordnetRoot.find("wordRoot")
+definition=wordnetRoot.find("definition")
+exception = wordnetRoot.Get("exception")
+relation=wordnetRoot.Get("relation")
+symmetrical=wordnetRoot.Get("symmetrical")
 antonym = relation.Get("antonym")
 
 for synset in list(wn.all_synsets()):
@@ -64,13 +64,13 @@ for synset in list(wn.all_synsets()):
 	type_=name.split('.')[1]
 	if(type_=='s' or type_=='a'or type_=='r'or type_=='v'or type_=='n'):
 		if synset.hyponyms()!=None:
-			addhyponyms(synset)
+			addHyponyms(synset)
 		if synset.lemmas()[0].antonyms()!=None:
-			if not doneantonyms.get(synset,False):
-				addantonyms(synset)
+			if not doneAntonyms.get(synset,False):
+				addAntonyms(synset)
 
-addexceptions("noun.exc")
-addexceptions("adj.exc")
-addexceptions("adv.exc")
-addexceptions("verb.exc")
-generalthing.save('wordnet-hyponyms-exceptions.datum')
+addExceptions("noun.exc")
+addExceptions("adj.exc")
+addExceptions("adv.exc")
+addExceptions("verb.exc")
+generalThing.save('wordnet-hyponyms-exceptions.datum')

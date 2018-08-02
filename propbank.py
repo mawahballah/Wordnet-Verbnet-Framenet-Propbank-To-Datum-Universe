@@ -6,42 +6,53 @@ from collections import deque
 os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 done={}
-def addroleset(name):
-	rolesetmainname=name.split('.')[0]
-	rolesetmainkatum=roleset.get(rolesetmainname)
-	rolesetnewkatum=rolesetmainkatum.get(rolesetmainkatum.countI)
-	rolesetsensenum=sensenumber.get(name.split('.')[1])
-	rolesetnewkatum._is(rolesetsensenum,False)
+doneCount=1
+def addRoleSet(name):
+	global doneCount
+	roleSetMainName=name.split('.')[0]
+	roleSetMainKatum=roleset.get(roleSetMainName)
+	roleSetNewKatum=roleSetMainKatum.get(roleSetMainKatum.countI)
+	rolesetsensenum=senseNumber.get(name.split('.')[1])
+	roleSetNewKatum._is(rolesetsensenum,False)	
 	if(pb.roleset(name)!=None):
-		rolesetmeaning=pb.roleset(name).get('name')
-		if(rolesetmeaning!=None):
-			rolesetmeaningkatum=meaning.get(rolesetmeaning)
-			rolesetnewkatum._is(rolesetmeaningkatum,False)
+		verbnetCls=pb.roleset(name).get('vncls')
+		if(verbnetCls!=None):
+			verbnetID=verbClassID.find(verbnetCls)
+			if(verbnetID!=None):
+				for vnClass in verbnetID.I:
+					roleSetNewKatum._is(vnClass,False)
+					print doneCount,vnClass.a0.O,vnClass.O,roleSetMainKatum.O,roleSetNewKatum.O
+					doneCount+=1
+		roleSetMeaning=pb.roleset(name).get('name')
+		if(roleSetMeaning!=None):
+			roleSetMeaningKatum=meaning.get(roleSetMeaning)
+			roleSetNewKatum._is(roleSetMeaningKatum,False)
 		for role in pb.roleset(name).findall("roles/role"):
-			argcount=role.attrib['n']
-			argname=role.attrib['descr']
-			if argcount != None and argname!=None:
-				argumentkatum=argument.get(argname)
-				argumentnamenumkatum=argumentkatum.get(argumentkatum.countI)
-				argnumkatum=argumentnumber.get(argcount)
-				argumentnamenumkatum._is(argnumkatum,False)
-				rolesetnewkatum._is(argumentnamenumkatum,False)
+			argCount=role.attrib['n']
+			argName=role.attrib['descr']
+			if argCount != None and argName!=None:
+				argumentKatum=argument.get(argName)
+				argumentNameNumKatum=argumentKatum.get(argumentKatum.countI)
+				argNumKatum=argumentNumber.get(argCount)
+				argumentNameNumKatum._is(argNumKatum,False)
+				roleSetNewKatum._is(argumentNameNumKatum,False)
 
 
 katum.load('wordnet-verbnet-framenet.datum', atum())
-generalthing = datum.thing
-propbank=generalthing.get("propbank")
-sensenumber=propbank.get("sense number")
+generalThing = datum.thing
+verbnetRoot=generalThing.find("verbnet")
+verbClassID=verbnetRoot.find("verb class id")
+propbank=generalThing.get("propbank")
+senseNumber=propbank.get("sense number")
 roleset=propbank.get("role set")
 argument=propbank.get("argument")
-argumentnumber=propbank.get("argument number")
+argumentNumber=propbank.get("argument number")
 meaning=propbank.get("meaning")
-
 for instance in pb.instances():
 	if instance.roleset.split('.')[1] !='XX':
 		if not done.get(instance.roleset,False):
 			done[instance.roleset]=True
-			addroleset(instance.roleset)
+			addRoleSet(instance.roleset)
 
 
-generalthing.save('wordnet-verbnet-framenet-propbank.datum')
+generalThing.save('wordnet-verbnet-framenet-propbank.datum')

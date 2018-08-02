@@ -7,56 +7,55 @@ os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
 
-def Getexactsynset(syn,wordindatum,wnr):
-	wordstr=Getname(syn)
+def getExactSynset(syn,wordInDatum,wnr):
+	wordStr=getName(syn)
 	definition = wnr.find("definition")
-	curdefinition = syn.definition()
+	currentDefinition = syn.definition()
 	priority=wnr.find("priority")
-	word = wordstr.split('.')[0]
-	pos = wordstr.split('.')[1]
-	typ="notfound"	
+	word = wordStr.split('.')[0]
+	pos = wordStr.split('.')[1]
+	type_="notfound"	
 	if (pos=='n'):
-		typ="noun"
+		type_="noun"
 	elif(pos=='v'):
-		typ="verb"
+		type_="verb"
 	elif(pos=='r'):
-		typ="adverb"
+		type_="adverb"
 	elif(pos=='a'):
-		typ="adjective"
-	if(typ!="notfound"):
-		if(wordindatum.countI>0):
-			for instance in wordindatum.I:
-				#if(instance.Is(wnr.find(typ))):
+		type_="adjective"
+	if(type_!="notfound"):
+		if(wordInDatum.countI>0):
+			for instance in wordInDatum.I:				
 				defin=definition.of(instance)
 				if(defin!=None):
-					if(defin.O==curdefinition):
+					if(defin.O==currentDefinition):
 						return instance
 	return None			
 
-def Getname(wne):
+def getName(wne):
     x=wne.name()
     x=str(x)
     return x						
 
 katum.load('wordnet-hyponyms-exceptions-topicdomains.datum', atum())
-wordnetthing = datum.thing
+generalThing = datum.thing
 
-wordnetroot=wordnetthing.find("wordnet")
-wordroot=wordnetroot.find("wordroot")
-lemma=wordnetroot.get("lemma")
+wordnetRoot=generalThing.find("wordnet")
+wordRoot=wordnetRoot.find("wordroot")
+lemma_=wordnetRoot.get("lemma")
 
-for w in wordroot.I:
-	worditself=w.O	
-	listofsynsets=wn.synsets(worditself)
-	for synset in listofsynsets:
-		listoflemmas=synset.lemma_names()
-		if(len(listoflemmas)>1):
-			exactinstance=Getexactsynset(synset,w,wordnetroot)
-			if(exactinstance!=None):						
-				for li in listoflemmas:
-					if(li!=worditself):					
-						lem=lemma.get(li)
-						exactinstance._is(lem,False)
+for word in wordRoot.I:
+	wordItself=word.O	
+	listOfSynsets=wn.synsets(wordItself)
+	for synset in listOfSynsets:
+		listOfLemmas=synset.lemma_names()
+		if(len(listOfLemmas)>1):
+			exactInstance=getExactSynset(synset,word,wordnetRoot)
+			if(exactInstance!=None):						
+				for lemma in listOfLemmas:
+					if(lemma!=wordItself):					
+						lemmaInstance=lemma_.get(lemma)
+						exactInstance._is(lemmaInstance,False)
 
 
-wordnetthing.save('wordnet-nohas.datum')
+generalThing.save('wordnet-nohas.datum')
