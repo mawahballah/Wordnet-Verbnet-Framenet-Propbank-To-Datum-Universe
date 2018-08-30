@@ -42,7 +42,7 @@ katum.load('wordnet-nosister.datum', atum())
 generalThing = datum.thing
 
 wordnetRoot=generalThing.find("wordnet")
-wordRoot=wordnetRoot.find("wordRoot")
+wordRoot=wordnetRoot.find("wordroot")
 has=wordnetRoot.find("has")
 sister=wordnetRoot.get("sister")
 
