@@ -17,7 +17,7 @@ def addframeRelations(frame):
 			parentKatum._is(frameRelations,False)
 
 
-katum.load('wordnet-verbnet-framenet-noframeRelations.datum', atum())
+katum.load('wordnet-verbnet-framenet-noframerelations.datum', atum())
 generalThing = datum.thing
 framenetRoot=generalThing.find("framenet")
 frame_=framenetRoot.find("frame")
