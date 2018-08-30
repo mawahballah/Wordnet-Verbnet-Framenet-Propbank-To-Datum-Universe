@@ -52,7 +52,7 @@ def addAntonyms(synset):
 katum.load('wordnetonlysynsets.datum', atum())
 generalThing = datum.thing
 wordnetRoot=generalThing.find("wordnet")
-wordRoot=wordnetRoot.find("wordRoot")
+wordRoot=wordnetRoot.find("wordroot")
 definition=wordnetRoot.find("definition")
 exception = wordnetRoot.Get("exception")
 relation=wordnetRoot.Get("relation")
