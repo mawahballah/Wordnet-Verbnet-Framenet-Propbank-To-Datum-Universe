@@ -67,15 +67,16 @@ for w in wordroot.I:
 	wordItself=w.O
 	listOfSynsets=wn.synsets(wordItself)
 	for synset in listOfSynsets:
-		if (len(synset.part_meronyms()) > 0 and len(synset.part_holonyms())==0):
-			if not visited.get(synset,False):
-				visited[synset]=True
-				exactInstance=getExactSynset(synset,w,wordnetRoot)
-				if(exactInstance!=None):
-					instanceName=exactInstance.a0.O
-					number=exactInstance.countI+1
-					newHasInstance=has.get(instanceName+str(number))
-					newHasInstance._is(exactInstance)
-					addHas(synset,w,wordnetRoot,newHasInstance)
+		if(synset.name().split('.')[0]==str(wordItself)):
+			if (len(synset.part_meronyms()) > 0 and len(synset.part_holonyms())==0):
+				if not visited.get(synset,False):
+					visited[synset]=True
+					exactInstance=getExactSynset(synset,w,wordnetRoot)
+					if(exactInstance!=None):
+						instanceName=exactInstance.a0.O
+						number=exactInstance.countI+1
+						newHasInstance=has.get(instanceName+str(number))
+						newHasInstance._is(exactInstance)
+						addHas(synset,w,wordnetRoot,newHasInstance)
 
 generalThing.save('wordnet-nosister.datum')
