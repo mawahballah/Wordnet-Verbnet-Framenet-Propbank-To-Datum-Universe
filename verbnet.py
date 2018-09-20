@@ -169,7 +169,7 @@ def processClassID(classIDs):
 		processThemRoles(numVerbKatum,classID)
 
 
-katum.load('wordnet.datum', atum())
+katum.load('wordnet-example-definition.datum', atum())
 generalThing = datum.thing
 verbnetRoot=generalThing.get("verbnet")
 wordnetRoot=generalThing.find("wordnet")
