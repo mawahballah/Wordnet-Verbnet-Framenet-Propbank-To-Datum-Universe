@@ -23,6 +23,8 @@ def getExactSynset(syn,wordInDatum,wnr):
 		type_="adverb"
 	elif(pos=='a'):
 		type_="adjective"
+	elif(pos=='s'):
+		type_="adjective satellite"
 	if(type_!="notfound"):
 		if(wordInDatum.countI>0):
 			for instance in wordInDatum.I:				
