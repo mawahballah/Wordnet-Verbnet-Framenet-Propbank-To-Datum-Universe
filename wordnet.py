@@ -8,7 +8,6 @@ from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 #to get the pos_number from synset 'x' => x=str(synset.name()) x.split('.')[2]
 
 
-
 thing = datum.setup(atum())
 wordnet = thing.Get("wordnet")
 wordroot = wordnet.Get("wordroot")
@@ -20,6 +19,7 @@ adverb = wordnet.Get("adverb")
 definition = wordnet.Get("definition")
 example_ = wordnet.Get("example")
 priority= wordnet.Get("priority")
+senseKey=wordnet.Get("sense key")
 typeDictionary={'s':adjectiveSatellite,'n':noun,'v':verb,'a':adjective,'r':adverb}
 
 for synset in list(wn.all_synsets()):
@@ -35,11 +35,10 @@ for synset in list(wn.all_synsets()):
 			for example in synset.examples():
 				exampleKatum=example_.Get(example)
 				wordKatum._is(exampleKatum,False)
+		sensekeyK=senseKey.Get(synset.lemmas()[0].key())
+		wordKatum._is(sensekeyK,False)
 		priorityKatum=priority.Get(name.split('.')[2])
 		wordKatum._is(priorityKatum,False)
 		wordKatum._is(typeDictionary[type_],False)
-
-
-
 
 thing.save('wordnetonlysynsets.datum')
