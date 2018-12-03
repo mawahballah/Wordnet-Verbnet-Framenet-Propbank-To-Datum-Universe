@@ -23,6 +23,8 @@ def getExactSynset(syn,wordInDatum,wnr):
 		type_="adverb"
 	elif(pos=='a'):
 		type_="adjective"
+	elif(pos=='s'):
+		type_="adjective satellite"
 	if(type_!="notfound"):
 		if(wordInDatum.countI>0):					
 			for instance in wordInDatum.I:
@@ -67,7 +69,7 @@ for w in wordroot.I:
 	wordItself=w.O
 	listOfSynsets=wn.synsets(wordItself)
 	for synset in listOfSynsets:
-		if(synset.name().split('.')[0]==str(wordItself)):
+		if(synset.name().split('.')[0]==str(wordItself)):			
 			if (len(synset.part_meronyms()) > 0 and len(synset.part_holonyms())==0):
 				if not visited.get(synset,False):
 					visited[synset]=True
@@ -79,4 +81,4 @@ for w in wordroot.I:
 						newHasInstance._is(exactInstance)
 						addHas(synset,w,wordnetRoot,newHasInstance)
 
-generalThing.save('wordnet-nosister.datum')
+generalThing.save('wordnet.datum')
