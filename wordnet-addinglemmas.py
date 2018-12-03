@@ -39,7 +39,7 @@ def getName(wne):
     x=str(x)
     return x						
 
-katum.load('wordnet-hyponyms-exceptions-topicdomains.datum', atum())
+katum.load('wordnet-nolemmas.datum', atum())
 generalThing = datum.thing
 
 wordnetRoot=generalThing.find("wordnet")
@@ -56,7 +56,7 @@ for word in wordRoot.I:
 			if(exactInstance!=None):						
 				for lemma in listOfLemmas:
 					if(lemma!=wordItself):					
-						lemmaInstance=lemma_.get(lemma)
+						lemmaInstance=lemma_.get(lemma.lower())
 						exactInstance._is(lemmaInstance,False)
 
 
