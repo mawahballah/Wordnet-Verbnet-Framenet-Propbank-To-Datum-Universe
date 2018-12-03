@@ -6,6 +6,7 @@ from collections import deque
 os.chdir(os.getcwd())
 from cpyDatumTron import atum, datum, katum, Of, Intersect, Union
 
+visited={}
 def getExactSynset(katum):
 	name=katum.a0.O
 	definitionKatum=definition.of(katum)
@@ -26,12 +27,13 @@ def getExactKatum(synset):
 				return instance				
 	return None
 
-katum.load('wordnet-hyponyms-exceptions.datum', atum())
+katum.load('wordnet-notopicdomains.datum', atum())
 generalThing = datum.thing
 wordnetRoot=generalThing.find("wordnet")
-wordRoot=wordnetRoot.find("wordRoot")
+wordRoot=wordnetRoot.find("wordroot")
 definition=wordnetRoot.find("definition")
 topicDomain_=wordnetRoot.get("topic domain")
+count=1
 for word in wordRoot.I:
 	if(word.countI>0):
 		for instance in word.I:
@@ -42,8 +44,14 @@ for word in wordRoot.I:
 					for topicDomain in topicDomains:
 						topicDomainKatum=getExactKatum(topicDomain)
 						if topicDomainKatum:
-							topicDomainKatum._is(topicDomain_,False)
-							instance._is(topicDomainKatum,False)
+							if topicDomainKatum in visited:
+								instance._is(visited[topicDomainKatum], False)
+							else:
+								topicDomainNewK=topicDomain_.get(count)
+								topicDomainNewK._is(topicDomainKatum,False)
+								instance._is(topicDomainNewK,False)
+								visited[topicDomainKatum]=topicDomainNewK
+								count+=1
 
 
-generalThing.save('wordnet-hyponyms-exceptions-topicDomains.datum')
+generalThing.save('wordnet-noregiondomains.datum')
