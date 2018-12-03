@@ -65,4 +65,4 @@ for synset in list(wn.all_synsets('v')):
 			addVerbGroup(synset,verbGroupSynset)
 	visited.add(synset)
 
-generalThing.save('wordnet-nopretainym.datum')
+generalThing.save('wordnet-nopertainym.datum')
