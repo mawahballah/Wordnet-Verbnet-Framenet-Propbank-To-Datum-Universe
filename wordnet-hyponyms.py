@@ -40,14 +40,14 @@ def addAntonyms(synset):
 	doneAntonyms[synset]=True
 	exactSynset=getExactKatum(synset)
 	if exactSynset!=None:
-		anotnymKatum=antonym.Get(antonym.countI)
-		anotnymKatum._is(symmetrical,False)
-		exactSynset._is(anotnymKatum,False)
-		for anotnym_ in synset.lemmas()[0].antonyms():
-			anotnymSynset=getExactKatum(anotnym_.synset())
-			if anotnymSynset!=None:
-				anotnymSynset._is(anotnymKatum,False)
-				doneAntonyms[anotnym_.synset()]=True
+		if len(synset.lemmas()[0].antonyms())>0 and getExactKatum(synset.lemmas()[0].antonyms()[0].synset()):
+			anotnymKatum=antonym.Get(antonym.countI)		
+			exactSynset._is(anotnymKatum,False)
+			for antonym_ in synset.lemmas()[0].antonyms():
+				antonymSynset=getExactKatum(antonym_.synset())
+				if antonymSynset!=None and not doneAntonyms.get(antonym_.synset(),False):
+					antonymSynset._is(anotnymKatum,False)
+					doneAntonyms[antonym_.synset()]=True
 
 katum.load('wordnetonlysynsets.datum', atum())
 generalThing = datum.thing
@@ -55,9 +55,7 @@ wordnetRoot=generalThing.find("wordnet")
 wordRoot=wordnetRoot.find("wordroot")
 definition=wordnetRoot.find("definition")
 exception = wordnetRoot.Get("exception")
-relation=wordnetRoot.Get("relation")
-symmetrical=wordnetRoot.Get("symmetrical")
-antonym = relation.Get("antonym")
+antonym = wordnetRoot.Get("antonym")
 
 for synset in list(wn.all_synsets()):
 	name=synset.name()
@@ -73,4 +71,4 @@ addExceptions("noun.exc")
 addExceptions("adj.exc")
 addExceptions("adv.exc")
 addExceptions("verb.exc")
-generalThing.save('wordnet-hyponyms-exceptions.datum')
+generalThing.save('wordnet-norelatedform.datum')
