@@ -40,10 +40,14 @@ Then type the following commands in turn:
 ```
 python wordnet.py
 python wordnet-hyponyms.py
+python wordnet-derivationallyrelatedform.py
+python wordnet-verbgroups.py
+python wordnet-pretainym.py
 python wordnet-topicdomains.py
+python wordnet-regiondomains.py
+python wordnet-usagedomains.py
 python wordnet-addinglemmas.py
 python wordnet-addinghas.py
-python wordnet-addingSister.py
 python verbnet.py
 python framenet.py
 python framenet-addingframerelations.py
