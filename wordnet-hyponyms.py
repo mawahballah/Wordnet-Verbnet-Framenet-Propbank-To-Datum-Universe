@@ -25,6 +25,11 @@ def addHyponyms(synset):
 			exactHyponymKatum= getExactKatum(hyponym)
 			if exactHyponymKatum!=None:
 				exactHyponymKatum._is(exactHypernymKatum,False)
+		for hyponym in synset.instance_hyponyms():
+			exactHyponymKatum= getExactKatum(hyponym)
+			if exactHyponymKatum!=None:
+				exactHyponymKatum._is(exactHypernymKatum,False)
+				
 
 def addExceptions(fileName):
     file=open(fileName,"r")
@@ -61,7 +66,7 @@ for synset in list(wn.all_synsets()):
 	name=synset.name()
 	type_=name.split('.')[1]
 	if(type_=='s' or type_=='a'or type_=='r'or type_=='v'or type_=='n'):
-		if synset.hyponyms()!=None:
+		if synset.hyponyms()!=None or synset.instance_hyponyms()!=None:
 			addHyponyms(synset)
 		if synset.lemmas()[0].antonyms()!=None:
 			if not doneAntonyms.get(synset,False):
